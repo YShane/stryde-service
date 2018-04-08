@@ -1,0 +1,117 @@
+{
+	"_type": "export",
+	"__export_format": 3,
+	"__export_date": "2018-04-08T18:06:53.498Z",
+	"__export_source": "insomnia.desktop.app:v5.14.9",
+	"resources": [
+		{
+			"_id": "wrk_4aa0808111eb42c99e2c1d3961242314",
+			"created": 1523206855630,
+			"description": "",
+			"modified": 1523206855630,
+			"name": "Stryde",
+			"parentId": null,
+			"_type": "workspace"
+		},
+		{
+			"_id": "env_0bd927455f3c40e4b3c60c1989e2f0d6",
+			"color": null,
+			"created": 1523206855660,
+			"data": {},
+			"isPrivate": false,
+			"modified": 1523206855660,
+			"name": "New Environment",
+			"parentId": "wrk_4aa0808111eb42c99e2c1d3961242314",
+			"_type": "environment"
+		},
+		{
+			"_id": "jar_c99d4904f2b1434d8a66f04e45d4ddd9",
+			"cookies": [],
+			"created": 1523206855662,
+			"modified": 1523206855662,
+			"name": "Default Jar",
+			"parentId": "wrk_4aa0808111eb42c99e2c1d3961242314",
+			"_type": "cookie_jar"
+		},
+		{
+			"_id": "req_53efd8cb7a214d2ebe4d55faf9e5d63f",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"dateOfBirth\": \"1984-05-24\",\n  \"email\": \"dannycandra@hotmail.com\",\n  \"firstName\": \"Danny\",\n  \"lastName\": \"Candra\",\n  \"middleName\": \"\",\n  \"password\": \"test1234\",\n  \"username\": \"dannyc\"\n}"
+			},
+			"created": 1523206907731,
+			"description": "",
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1523206907731,
+			"method": "POST",
+			"modified": 1523207192922,
+			"name": "Register",
+			"parameters": [],
+			"parentId": "wrk_4aa0808111eb42c99e2c1d3961242314",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "http://localhost:8900/api/auth/register?",
+			"_type": "request"
+		},
+		{
+			"_id": "req_e1e930b0aaf94e90b7698c65d6318847",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"username\": \"dannycandra@hotmail.com\",\n\t\"password\": \"test1234\"\n}"
+			},
+			"created": 1523207328959,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_eb8f0360e5094be8bdc617986d0c4425",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1523206907681,
+			"method": "POST",
+			"modified": 1523207355660,
+			"name": "Login",
+			"parameters": [],
+			"parentId": "wrk_4aa0808111eb42c99e2c1d3961242314",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "http://localhost:8900/api/auth/login",
+			"_type": "request"
+		},
+		{
+			"_id": "req_6c6d341e30354c05a1748a1866a8b768",
+			"authentication": {
+				"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsic3RyeWRlLXJlc291cmNlLWlkIl0sInVzZXJfbmFtZSI6ImRhbm55Y2FuZHJhQGhvdG1haWwuY29tIiwic2NvcGUiOlsic3RyeWRlIl0sImV4cCI6MTUyMzIxNzI0NCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImQ4ZjQzZGRlLTVkMDQtNGM2MC04NDMwLWYwMWQ1YzgwZDg2YSIsImNsaWVudF9pZCI6InN0cnlkZS1jbGllbnQtaWQifQ.FfZf2KZG4ledoiBL_kiTAaFI9cp29VcrGCxeDjQC5es",
+				"type": "bearer"
+			},
+			"body": {},
+			"created": 1523210019319,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1523206907631,
+			"method": "GET",
+			"modified": 1523210052638,
+			"name": "GetMyAccount",
+			"parameters": [],
+			"parentId": "wrk_4aa0808111eb42c99e2c1d3961242314",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "http://localhost:8900/api/account",
+			"_type": "request"
+		}
+	]
+}
