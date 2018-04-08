@@ -20,8 +20,6 @@ public class UserDto implements Serializable{
 
 	private String firstName;
 
-	private String middleName;
-
 	private String lastName ;
 
 	private LocalDate dateOfBirth;
@@ -67,14 +65,6 @@ public class UserDto implements Serializable{
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
 	}
 
 	public String getLastName() {
