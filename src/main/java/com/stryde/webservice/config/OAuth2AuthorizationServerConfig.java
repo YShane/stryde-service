@@ -54,10 +54,12 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 				.secret(passwordEncoder.encode(oauth2ClientSecret)) // client secret, only those that know secret could
 																	// ask for token (in password flow)
 				.scopes(oauth2Scope) // allow spring security to secure using has(#oauth2.scope)
-				.authorities("EVMS_READ", "EVMS_WRITE").resourceIds(oauth2ResourceId) // issue token for this
+				.authorities("STRYDE_READ", "STRYDE_WRITE")
+				.resourceIds(oauth2ResourceId) // issue token for this
 																						// resource-id
 				.autoApprove(true) // no need user approval, since its 1st party app
-				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(7200) // 2h
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(7200) // 2h
 				.refreshTokenValiditySeconds(2592000); // 30 days
 	}
 
