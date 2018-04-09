@@ -1,4 +1,4 @@
-package com.shane.stryde;
+package com.stryde;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
