@@ -1,5 +1,6 @@
-package com.stryde.webservice.dto;
+package com.stryde.webservice.dto.TravelRouting;
 
+//This handles user inputted start, and stop locations, optionally, time of travel
 public class TravelRouteDto {
 
     private String startLocationName;
