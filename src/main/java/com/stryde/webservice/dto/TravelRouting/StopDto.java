@@ -1,8 +1,9 @@
 package com.stryde.webservice.dto.TravelRouting;
 
-public class PointDto {
+public class StopDto {
 
-    private int stopId;
+    private String stopId;
+
     //the place is the name of the city
     private String place;
     //the object is the name of the exact place(stop)
@@ -13,11 +14,11 @@ public class PointDto {
     private String coordinates;
     private String stopType;
 
-    public int getStopId() {
+    public String getStopId() {
         return stopId;
     }
 
-    public void setStopId(int stopId) {
+    public void setStopId(String stopId) {
         this.stopId = stopId;
     }
 

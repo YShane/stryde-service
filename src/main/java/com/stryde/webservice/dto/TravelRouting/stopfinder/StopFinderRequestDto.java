@@ -1,7 +1,7 @@
-package com.stryde.webservice.dto.TravelRouting;
+package com.stryde.webservice.dto.TravelRouting.stopfinder;
 
 //This dto handles search terms inputted by user, carried to the backend via websockets
-public class TravelSearchDto {
+public class StopFinderRequestDto {
 
     private String searchTerm;
 

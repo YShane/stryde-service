@@ -1,6 +1,6 @@
 package com.stryde.webservice.service.mappers;
 
-import com.stryde.webservice.dto.TravelRouting.StopFinderResponseDto;
+import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderResponseDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class VrrResponseToStrydeResponseMappingServiceImpl implements VrrRespons
     /**
      * @param= JSONarray
      * @implNote returns a list of (smaller) objects for the stopfinder search
-     * @return {@link com.stryde.webservice.dto.TravelRouting.StopFinderResponseDto}
+     * @return {@link StopFinderResponseDto}
      */
     @Override
     public List<StopFinderResponseDto> getStopFinderResponses(JSONArray array){

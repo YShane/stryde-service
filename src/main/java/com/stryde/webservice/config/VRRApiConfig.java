@@ -58,6 +58,20 @@ public class VRRApiConfig {
     @Value("${coordOutputFormatTail}")
     public int coordOutputFormatTailparamValue;
 
+    @Value("${useLocalityMainStopParam}")
+    public String useLocalityMainStopParam;
+    @Value("${useLocalityMainStopParamValue}")
+    public int useLocalityMainStopParamValue;
+
+    @Value("${doNotSearchForStopsParam}")
+    public String doNotSearchForStopsParam;
+    @Value("${doNotSearchForStopsParamValue}")
+    public int doNotSearchForStopsParamValue;
+
+    @Value("${anyObjFilterParam}")
+    public String anyObjFilterParam;
+    @Value("${anyObjFilterParamValue}")
+    public int anyObjFilterParamValue;
 
     @Value("${locationServerActiveparam}")
     public String locationServerActiveparam;
@@ -88,7 +102,17 @@ public class VRRApiConfig {
     public String nameparam;
 
     @Value("${placeparam}")
-    public String placeparam;
+    public String placeParam;
+
+    @Value("${itdDateDayMonthYearparam}")
+    public String dateParam;
+
+    @Value("${itdTimeHourparam}")
+    public String timeHourParam;
+
+    @Value("${itdTimeMinutepram}")
+    public String timeMinuteParam;
+
 
 
     //request specific urls
@@ -100,6 +124,29 @@ public class VRRApiConfig {
     //Stopfinderaddendum at end of certain params
     @Value("${stopfinderaddendum}")
     public String stopfinderAddendum;
+
+/**/
+
+    //TripRequest
+    @Value("${triprequesturl}")
+    public String tripRequestUrlParam;
+
+    @Value("${TRoriginaddendum}")
+    public String originAddendumParam;
+
+    @Value("${TRdestinationaddendum}")
+    public String destinationAddendumParam;
+
+    @Value("${TRviaaddendum}")
+    public String viaAddendumParam;
+
+    @Value("${istimedepartureorarrivaltimeparam}")
+    public String isTimeDepartureOrArrivalParam;
+
+
+
+//    @Value("${}")
+
 
 
 

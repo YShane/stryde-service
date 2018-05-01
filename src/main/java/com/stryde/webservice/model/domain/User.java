@@ -2,15 +2,10 @@ package com.stryde.webservice.model.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.stryde.webservice.model.domain.embedded.EditInfo;
 import com.stryde.webservice.model.enums.UserRole;
@@ -20,6 +15,7 @@ import com.stryde.webservice.model.enums.UserRole;
 import com.stryde.webservice.model.enums.UserState;
 
 @Entity
+@Table(name = "user")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -56,6 +52,9 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "ENUM('ROLE_ADMIN', 'ROLE_USER')", nullable = false)
 	private UserRole userRole;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Trip> trips = new ArrayList<>();
 
 	public Long getUserId() {
 		return userId;
@@ -137,4 +136,11 @@ public class User implements Serializable {
 		this.userRole = userRole;
 	}
 
+	public List<Trip> getTrips() {
+		return trips;
+	}
+
+	public void setTrips(List<Trip> trips) {
+		this.trips = trips;
+	}
 }
