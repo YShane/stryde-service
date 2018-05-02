@@ -8,4 +8,5 @@ public class TripRequestResponseDto {
 
     private List<Trip> trips;
 
+
 }

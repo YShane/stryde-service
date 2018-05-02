@@ -1,5 +1,6 @@
 package com.stryde.webservice.service;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 
@@ -31,6 +32,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private StorageService storageService;
+
 	@Transactional
 	@Override
 	public UserDto updateUser(UserDto userDto) throws ParseException {
@@ -44,8 +48,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public void updateProfilePicture(MultipartFile multipartFile) {
-		// storageService.uploadPicture(multipartFile);
+	public void updateProfilePicture(UserDto userDto, MultipartFile multipartFile) throws IOException {
+		 storageService.storeProfilePicture(userDto, multipartFile);
 	}
 
 	private User updateUser(UserDto userDto, User user, LocalDateTime now) throws ParseException {

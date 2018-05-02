@@ -1,5 +1,6 @@
 package com.stryde.webservice.controller.rest.secured;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 import javax.validation.Valid;
@@ -47,7 +48,7 @@ public class AccountRestController {
 	@PostMapping("/upload/profile")
 	@ResponseStatus(HttpStatus.OK)
 	public void updateCurrentUserProfilePicture( @RequestParam("extraField") String extraField,
-            @RequestParam("file") MultipartFile multipartFile) throws ParseException {
-		accountService.updateProfilePicture(multipartFile);
+            @RequestParam("file") MultipartFile multipartFile, @Valid @RequestBody UserDto userDto) throws ParseException, IOException {
+		accountService.updateProfilePicture(userDto, multipartFile);
 	}
 }

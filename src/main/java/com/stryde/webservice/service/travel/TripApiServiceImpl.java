@@ -84,7 +84,7 @@ public class TripApiServiceImpl implements TripApiService {
              * @return StopFinderResponseDto
              */
     @Override
-    public List<StopFinderResponseDto> getPossibleStopsFromApiResponse(String searchterm){
+    public List<StopFinderResponseDto> getPossibleStopsFromApiResponse(String searchterm) throws ClientProtocolException, IOException, URISyntaxException{
 
         List<StopFinderResponseDto> responseDtos = new ArrayList<>();
 
@@ -97,7 +97,6 @@ public class TripApiServiceImpl implements TripApiService {
         params.add(new BasicNameValuePair(apiC.doNotSearchForStopsParam, Integer.toString(apiC.doNotSearchForStopsParamValue)));
         params.add(new BasicNameValuePair(apiC.anyObjFilterParam, Integer.toString(apiC.anyObjFilterParamValue)));
 
-        try {
             HttpClient httpClient = HttpClientBuilder.create().build();
 
             URIBuilder builder = this.baseUriBuilder;
@@ -115,20 +114,12 @@ public class TripApiServiceImpl implements TripApiService {
 
             List<StopFinderResponseDto> possibleStops = processStopFinderResponse(responseEntity);
 
-        } catch (UnsupportedEncodingException ex){
-            logger.error(ex.getStackTrace().toString());
-        } catch (ClientProtocolException ex2){
-            logger.error(ex2.getStackTrace().toString());
-        } catch (IOException ex3){
-            logger.error(ex3.getStackTrace().toString());
-        }catch (URISyntaxException u){
-            logger.error("URI syntax issue when building" + u.getMessage());
-        }
 
         return responseDtos;
     }
 
-    public List<Trip> getTripsFromApi(TripRequestRequestDto requestDto){
+    @Override
+    public List<Trip> getTripsFromApi(TripRequestRequestDto requestDto) throws URISyntaxException, IOException, JSONException, ParseException{
 
         List<Trip> possibleTrips = new ArrayList<>();
 
@@ -150,7 +141,6 @@ public class TripApiServiceImpl implements TripApiService {
         String basepath = builder.getPath();
         builder.setPath(basepath + apiC.tripRequestUrlParam);
 
-        try {
             HttpGet httpGet = new HttpGet(builder.build());
             HttpResponse response = httpClient.execute(httpGet);
             logger.debug(response.toString());
@@ -159,24 +149,13 @@ public class TripApiServiceImpl implements TripApiService {
 
             TripRequestResponseDto responseDto = processTripRequest(entity);
 
-
-
-        }catch (URISyntaxException u){
-            logger.error("URI syntax issue when building URL" + u.getMessage());
-        }catch (ClientProtocolException c){
-            logger.error("Error in executing Http Get Request: " + c);
-        }catch (IOException i){
-            logger.error("IOException :" + i);
-        }
-
         return null;
     }
 
-    private List<StopFinderResponseDto> processStopFinderResponse(HttpEntity entity){
+    private List<StopFinderResponseDto> processStopFinderResponse(HttpEntity entity) throws IOException, JSONException, ParseException{
 
         List<StopFinderResponseDto> responseDtos = new ArrayList<>();
 
-        try {
             JSONObject root = getJSONObjectFromEntity(entity);
 
             JSONArray parameters = root.getJSONArray(parameterArray);
@@ -194,26 +173,14 @@ public class TripApiServiceImpl implements TripApiService {
 
             responseDtos = mappingService.getStopFinderResponses(pointsArray);
 
-        }catch (JSONException e){
-            //syntax error in json string. Should probably have already been a parse exception
-            logger.error(e.toString());
-        }catch (ParseException e1){
-            //probably not json
-            logger.error(e1.toString());
-        }catch (IOException e2){
-            //error reading json
-            logger.error(e2.toString());
-        }
-        return responseDtos;
+            return null;
+
     }
 
-    private TripRequestResponseDto processTripRequest(HttpEntity entity){
-        try {
+    private TripRequestResponseDto processTripRequest(HttpEntity entity) throws IOException, JSONException, ParseException{
+
             JSONObject object = getJSONObjectFromEntity(entity);
 
-        }catch (IOException i){
-            logger.error("IOException when getting JSON from HttpEntity" + i);
-        }
         //TODO
         return null;
     }

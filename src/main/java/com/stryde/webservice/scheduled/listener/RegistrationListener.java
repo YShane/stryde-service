@@ -72,7 +72,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 		String recipientAddress = userDto.getEmail();
 		String url = baseUrl + serverContextPath + "/auth/verify/" + token;
 		
-		// TODO check if its working
+		// rfrTODO check if its working
 		Locale locale = LocaleContextHolder.getLocaleContext().getLocale();
 		String subject = messageSource.getMessage(
 			       "email.registration.subject", 
