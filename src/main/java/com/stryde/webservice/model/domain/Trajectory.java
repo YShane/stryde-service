@@ -1,6 +1,8 @@
 package com.stryde.webservice.model.domain;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,9 @@ public class Trajectory {
     private static final String C_project = "project";
     private static final String C_network = "network";
     private static final String C_stateless = "stateless";
-    private static final String C_operator = "opearator";
+    private static final String C_operator = "operator";
+    private static final String C_dateOfTrajectory = "trajectorydate";
+    private static final String C_dateAdded = "dateadded";
 
     @Column(name= C_Id, nullable = false)@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,6 +79,12 @@ public class Trajectory {
 
     @Column(name = C_destination_id)
     private String destinationId;
+
+    @Column(name = C_dateOfTrajectory)
+    private LocalDate trajectoryDate;
+
+    @Column(name = C_dateAdded, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime dateAdded;
 
     @OneToMany(mappedBy = "trajectory", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
@@ -197,5 +207,29 @@ public class Trajectory {
 
     public void setDestinationId(String destinationId) {
         this.destinationId = destinationId;
+    }
+
+    public LocalDate getTrajectoryDate() {
+        return trajectoryDate;
+    }
+
+    public void setTrajectoryDate(LocalDate trajectoryDate) {
+        this.trajectoryDate = trajectoryDate;
+    }
+
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDateTime dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
     }
 }

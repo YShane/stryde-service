@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Service
@@ -19,7 +21,7 @@ public class TravelInfoServiceImpl implements TravelInfoService {
     private TripApiService tripApiService;
 
     @Override
-    public List<StopFinderResponseDto> findStops(String searchterm) {
+    public List<StopFinderResponseDto> findStops(String searchterm) throws IOException, URISyntaxException {
 
       return this.tripApiService.getPossibleStopsFromApiResponse(searchterm);
     }

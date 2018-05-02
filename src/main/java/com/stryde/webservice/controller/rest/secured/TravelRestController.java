@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/travel")
@@ -25,7 +27,7 @@ public class TravelRestController {
 
     @PreAuthorize("@securityService.isMyAccount(#authentication, #userDto.userId)")
     @PostMapping("/findStop")
-    public ResponseEntity<?> searchForSpot(@Valid @RequestBody StopFinderRequestDto spot) {
+    public ResponseEntity<?> searchForSpot(@Valid @RequestBody StopFinderRequestDto spot) throws IOException, URISyntaxException {
 
             return new ResponseEntity<>(this.travelInfoService.findStops(spot.getSearchTerm()), HttpStatus.OK);
     }
