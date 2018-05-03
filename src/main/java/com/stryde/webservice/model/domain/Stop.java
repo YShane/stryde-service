@@ -1,11 +1,14 @@
 package com.stryde.webservice.model.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
 @Table(name = "stop")
-public class Stop {
+public class Stop implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final String C_Id = "id";
     private static final String C_stopId = "stopId";

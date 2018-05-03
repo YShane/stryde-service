@@ -86,12 +86,6 @@
 			<artifactId>spring-security-jwt</artifactId>
 			<version>1.0.9.RELEASE</version>
 		</dependency>
-
-		<!-- Facebook Login-->
-		<dependency>
-			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-facebook</artifactId>
-		</dependency>
 		
 		<!-- spring jpa data / entity framework -->
 		<dependency>

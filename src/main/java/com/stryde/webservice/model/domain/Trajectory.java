@@ -1,6 +1,7 @@
 package com.stryde.webservice.model.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,7 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "trajectory")
-public class Trajectory {
+public class Trajectory implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final String C_Id = "id";
     private static final String C_trainname = "trainname";

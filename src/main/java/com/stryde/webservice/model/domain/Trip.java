@@ -3,6 +3,7 @@ package com.stryde.webservice.model.domain;
 import com.stryde.webservice.dto.TravelRouting.StopDto;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "trip")
-public class Trip {
+public class Trip implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final String C_Id = "id";
     private static final String C_userid = "user_id";

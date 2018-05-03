@@ -49,6 +49,8 @@ public class TravelRestController {
     public ResponseEntity<?> saveTripImTaking(){
         return null;
     }
+
+
 /*
     //User adds a trip for which he's willing to take someone with him
     @RequestMapping("/addtrip")

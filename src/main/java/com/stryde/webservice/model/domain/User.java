@@ -56,6 +56,10 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Trip> trips = new ArrayList<>();
 
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Media media = new Media();
+
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -142,5 +146,13 @@ public class User implements Serializable {
 
 	public void setTrips(List<Trip> trips) {
 		this.trips = trips;
+	}
+
+	public Media getMedia() {
+		return media;
+	}
+
+	public void setMedia(Media media) {
+		this.media = media;
 	}
 }
