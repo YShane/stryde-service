@@ -13,8 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 
@@ -25,12 +24,15 @@ public class AzureStorageServiceImpl implements AzureStorageService {
 
     private final String containerName = "";
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private CloudStorageAccount cloudStorageAccount;
 
-    @Override
-    public void uploadImageAsProfilePicture(UserDto userDto, OutputStream thumbnail, MultipartFile originalFile) throws FileUploadErrorException {
+    private final String ORIGINAL_PROFILE_PICTURE = "_profile_picture";
+    private final String ORIGINAL_PROFILE_PICTURE_THUMBNAIL = "_profile_picture_thumbnail";
 
+    @Override
+    public void uploadImageAsProfilePicture(UserDto userDto, File thumbnailFile, MultipartFile originalFile) throws FileUploadErrorException {
 
         final CloudBlobClient blobClient = cloudStorageAccount.createCloudBlobClient();
 
@@ -48,17 +50,27 @@ public class AzureStorageServiceImpl implements AzureStorageService {
             // Set the permissions on the container.
             container.uploadPermissions(containerPermissions);
 
+            //photo names are a combination of the user's emailaddress and a string
+            String originalFileName = userDto.getEmail() + ORIGINAL_PROFILE_PICTURE;
+            String thumbnailFileName = userDto.getEmail() + ORIGINAL_PROFILE_PICTURE_THUMBNAIL;
 
-/*        EmployeeDataVo vo = daoAndDTOService.fillEmployeeDataVoByEmployeeId(employeeId);
-        String filename = vo.getEmployerEmailAddress() + "/" + vo.getEmployeeEmailAddress() +
-                "/" + LocalDateTime.now().toString();
 
-        CloudBlockBlob blob = container.getBlockBlobReference(filename);
-        InputStream myFile = file.getInputStream();
-        blob.upload(myFile, file.getSize());
-        myFile.close();*/
+        CloudBlockBlob originalBlob = container.getBlockBlobReference(originalFileName);
+        CloudBlockBlob thumbnailBlob = container.getBlockBlobReference(thumbnailFileName);
 
-        } catch (StorageException | URISyntaxException e) {
+        //upload original
+        InputStream orginalIs = originalFile.getInputStream();
+        originalBlob.upload(orginalIs, originalFile.getSize());
+        orginalIs.close();
+
+        FileInputStream fis = null;
+
+        //upload original
+        fis = new FileInputStream(thumbnailFile);
+        thumbnailBlob.upload(fis, thumbnailFile.length());
+        fis.close();
+
+        } catch (StorageException | URISyntaxException  | IOException  e) {
             LOGGER.error("Getting container reference Issue {} " + e);
             throw new FileUploadErrorException(AppErrorCode.UPLOAD_FILE_FAILURE);
         }

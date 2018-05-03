@@ -58,7 +58,7 @@ public class TripApiServiceImpl implements TripApiService {
         }
 
 
-        this.baseNameValuePairList = new ArrayList<NameValuePair>();
+        this.baseNameValuePairList = new ArrayList<>();
         baseNameValuePairList.add(new BasicNameValuePair(apiC.sessionIdparam, Integer.toString(apiC.sessionIdparamValue)));
         baseNameValuePairList.add(new BasicNameValuePair(apiC.requestIDparam, Integer.toString(apiC.requestIDparamValue)));
         baseNameValuePairList.add(new BasicNameValuePair(apiC.languageparam, apiC.languageparamValue));

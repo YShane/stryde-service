@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
@@ -30,9 +31,9 @@ public class StorageServiceImpl implements StorageService{
             throw new IllegalArgumentException("Uploaded File is all kinds of fucked up! " + file);
         }
 
-        OutputStream thumbnailOutputStream = imageProcessorService.generateThumbnail(file);
+        File thumbnailFile = imageProcessorService.generateThumbnail(file);
 
-        //azureStorageService.uploadImageAsProfilePicture(userDto, thumbnailOutputStream, file );
+        azureStorageService.uploadImageAsProfilePicture(userDto, thumbnailFile, file );
 
 
     }
