@@ -134,6 +134,20 @@
 			<version>1.1.2</version>
 		</dependency>
 
+		<!-- azure storage -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-storage-spring-boot-starter</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<!--For the generation of image thumbnails-->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.8</version>
+		</dependency>
+
 		<!-- test frameworks -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
