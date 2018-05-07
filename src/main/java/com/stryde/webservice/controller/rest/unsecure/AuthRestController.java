@@ -5,10 +5,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.stryde.webservice.dto.UserDto;
-import com.stryde.webservice.dto.auth.LoginDto;
-import com.stryde.webservice.dto.auth.RegistrationDto;
-import com.stryde.webservice.service.EmailVerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;

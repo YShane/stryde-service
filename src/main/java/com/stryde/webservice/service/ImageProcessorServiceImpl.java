@@ -1,19 +1,18 @@
 package com.stryde.webservice.service;
 
-import com.stryde.webservice.exception.AppErrorCode;
-import com.stryde.webservice.exception.FileUploadErrorException;
-import com.stryde.webservice.utils.FileUtils;
-import net.coobird.thumbnailator.Thumbnailator;
+import java.io.File;
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import com.stryde.webservice.exception.AppErrorCode;
+import com.stryde.webservice.exception.FileUploadErrorException;
+import com.stryde.webservice.utils.FileUtils;
+
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Service
 public class ImageProcessorServiceImpl implements ImageProcessorService {

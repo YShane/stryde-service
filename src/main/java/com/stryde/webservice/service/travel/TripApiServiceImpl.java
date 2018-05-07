@@ -1,13 +1,10 @@
 package com.stryde.webservice.service.travel;
 
-import com.stryde.webservice.config.VRRApiConfig;
-import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderResponseDto;
-import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestRequestDto;
-import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestResponseDto;
-import com.stryde.webservice.model.domain.Trip;
-import com.stryde.webservice.model.enums.travel.PointTypes;
-import com.stryde.webservice.service.mappers.VrrResponseToStrydeResponseMappingService;
-import com.stryde.webservice.utils.DateUtils;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -27,11 +24,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import com.stryde.webservice.config.VRRApiConfig;
+import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderResponseDto;
+import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestRequestDto;
+import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestResponseDto;
+import com.stryde.webservice.model.domain.Trip;
+import com.stryde.webservice.model.enums.travel.PointTypes;
+import com.stryde.webservice.service.mappers.VrrResponseToStrydeResponseMappingService;
+import com.stryde.webservice.utils.DateUtils;
 
 @Service
 public class TripApiServiceImpl implements TripApiService {

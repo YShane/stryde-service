@@ -1,13 +1,12 @@
 package com.stryde.webservice.service.travel;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
+
 import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderResponseDto;
 import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestRequestDto;
 import com.stryde.webservice.model.domain.Trip;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public interface TravelInfoService {
 

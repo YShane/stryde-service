@@ -1,5 +1,6 @@
 package com.stryde.webservice.model.domain.embedded;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,9 @@ import javax.persistence.OneToOne;
 import com.stryde.webservice.model.domain.User;
 
 @Embeddable
-public class EditInfo {
+public class EditInfo implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Allowing null reference in case user is deleted

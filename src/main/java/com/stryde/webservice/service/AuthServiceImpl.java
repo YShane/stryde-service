@@ -2,7 +2,6 @@ package com.stryde.webservice.service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -15,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.stryde.webservice.dto.UserDto;
+import com.stryde.webservice.dto.UserMinDto;
 import com.stryde.webservice.dto.auth.RegistrationDto;
 import com.stryde.webservice.exception.AppErrorCode;
 import com.stryde.webservice.exception.StrydeException;
@@ -85,10 +85,21 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-	public UserDto getCurrentUserByAuthentication(Authentication authentication) {
+	public UserDto getCurrentUserDtoByAuthentication(Authentication authentication) {
 		String email = (String) authentication.getPrincipal();
-		Optional<User> optUser = userRepository.findByEmail(email);
-		return modelMapper.map(optUser.get(), UserDto.class);
+		User user =  findUserByEmailOrThrow(email);
+		return modelMapper.map(user, UserDto.class);
+	}
+	
+	@Override
+	public UserMinDto getCurrentUserMinDtoByAuthentication(Authentication authentication) {
+		String email = (String) authentication.getPrincipal();
+		User user =  findUserByEmailOrThrow(email);
+		return modelMapper.map(user, UserMinDto.class);
+	}
+	
+	private User findUserByEmailOrThrow(String email) {
+		return userRepository.findByEmail(email).orElseThrow(() -> new StrydeException(AppErrorCode.USER_NOT_FOUND));
 	}
 	
 	private void validateInput(RegistrationDto registrationDto) {
@@ -106,4 +117,6 @@ public class AuthServiceImpl implements AuthService{
 	private boolean validatePassword(String password, User user) {
 		return passwordEncoder.matches(password, user.getPassword());
 	}
+
+
 }

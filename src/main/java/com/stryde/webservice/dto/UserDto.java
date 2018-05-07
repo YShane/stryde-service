@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stryde.webservice.model.enums.UserRole;
-import com.stryde.webservice.model.enums.UserRole;
 
 public class UserDto implements Serializable{
 

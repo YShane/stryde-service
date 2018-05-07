@@ -1,10 +1,9 @@
 package com.stryde.webservice.service;
 
-import com.stryde.webservice.dto.UserDto;
-import com.stryde.webservice.dto.auth.RegistrationDto;
 import org.springframework.security.core.Authentication;
 
 import com.stryde.webservice.dto.UserDto;
+import com.stryde.webservice.dto.UserMinDto;
 import com.stryde.webservice.dto.auth.RegistrationDto;
 
 public interface AuthService {
@@ -13,5 +12,7 @@ public interface AuthService {
 
 	UserDto getActiveUserDtoByEmailAndPassword(String email, String password);
 	
-	UserDto getCurrentUserByAuthentication(Authentication authentication);
+	UserDto getCurrentUserDtoByAuthentication(Authentication authentication);
+	
+	UserMinDto getCurrentUserMinDtoByAuthentication(Authentication authentication);
 }

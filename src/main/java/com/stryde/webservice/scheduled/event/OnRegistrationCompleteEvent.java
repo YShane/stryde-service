@@ -2,7 +2,6 @@ package com.stryde.webservice.scheduled.event;
 
 import java.util.Locale;
 
-import com.stryde.webservice.dto.UserDto;
 import org.springframework.context.ApplicationEvent;
 
 import com.stryde.webservice.dto.UserDto;

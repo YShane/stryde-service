@@ -3,7 +3,6 @@ package com.stryde.webservice.service;
 import java.io.IOException;
 import java.text.ParseException;
 
-import com.stryde.webservice.dto.UserDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.stryde.webservice.dto.UserDto;

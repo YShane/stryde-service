@@ -5,7 +5,6 @@ import java.text.ParseException;
 
 import javax.validation.Valid;
 
-import com.stryde.webservice.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,11 +30,11 @@ public class AccountRestController {
 	private AccountService accountService;
 	
 	@Autowired
-	private AuthService AuthService;
+	private AuthService authService;
 
 	@GetMapping
 	public UserDto getCurrentUser(Authentication authentication) {
-		return AuthService.getCurrentUserByAuthentication(authentication);
+		return authService.getCurrentUserDtoByAuthentication(authentication);
 	}
 	
 	@PreAuthorize("@securityService.isMyAccount(#authentication, #userDto.userId)")

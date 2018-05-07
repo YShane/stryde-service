@@ -7,11 +7,6 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 
-import com.stryde.webservice.dto.UserDto;
-import com.stryde.webservice.dto.auth.EmailVerificationTokenDto;
-import com.stryde.webservice.scheduled.event.OnRegistrationCompleteEvent;
-import com.stryde.webservice.service.EmailService;
-import com.stryde.webservice.service.EmailVerificationTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

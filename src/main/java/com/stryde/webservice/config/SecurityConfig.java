@@ -1,7 +1,5 @@
 package com.stryde.webservice.config;
 
-import com.stryde.webservice.config.provider.DbAuthenticationProvider;
-import com.stryde.webservice.service.SecurityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

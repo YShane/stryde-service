@@ -2,9 +2,6 @@ package com.stryde.webservice.service;
 
 import java.util.Optional;
 
-import com.stryde.webservice.dto.UserDto;
-import com.stryde.webservice.model.domain.User;
-import com.stryde.webservice.model.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,16 +1,14 @@
 package com.stryde.webservice.service;
-import com.stryde.webservice.dto.UserDto;
-import com.stryde.webservice.exception.FileUploadErrorException;
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
+import com.stryde.webservice.dto.UserDto;
+import com.stryde.webservice.exception.FileUploadErrorException;
 
 
 @Service

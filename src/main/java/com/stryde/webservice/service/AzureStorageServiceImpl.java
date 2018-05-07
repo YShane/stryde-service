@@ -1,21 +1,27 @@
 package com.stryde.webservice.service;
 
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.*;
-import com.stryde.webservice.dto.UserDto;
-import com.stryde.webservice.exception.AppErrorCode;
-import com.stryde.webservice.exception.FileUploadErrorException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.BlobContainerPermissions;
+import com.microsoft.azure.storage.blob.BlobContainerPublicAccessType;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.stryde.webservice.dto.UserDto;
+import com.stryde.webservice.exception.AppErrorCode;
+import com.stryde.webservice.exception.FileUploadErrorException;
 
 @Service
 public class AzureStorageServiceImpl implements AzureStorageService {

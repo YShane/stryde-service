@@ -6,11 +6,6 @@ import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
-import com.stryde.webservice.dto.UserDto;
-import com.stryde.webservice.exception.AppErrorCode;
-import com.stryde.webservice.model.domain.User;
-import com.stryde.webservice.model.repository.UserRepository;
-import com.stryde.webservice.utils.DateUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

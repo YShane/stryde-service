@@ -14,7 +14,7 @@ public class SecurityServiceImpl implements SecurityService{
 	
 	@Override
 	public boolean isMyAccount(Authentication authentication, Long userId) {
-		UserDto loggedInUserDto = AuthService.getCurrentUserByAuthentication(authentication);
+		UserDto loggedInUserDto = AuthService.getCurrentUserDtoByAuthentication(authentication);
 
 		if (loggedInUserDto.getUserId() == userId) {
 			return true;
