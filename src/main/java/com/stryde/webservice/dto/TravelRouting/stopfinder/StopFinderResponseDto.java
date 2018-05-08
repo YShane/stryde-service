@@ -6,6 +6,9 @@ public class StopFinderResponseDto {
 
     private StopDto point;
 
+    public StopFinderResponseDto(){
+        this.point = new StopDto();
+    }
     public StopDto getPoint() {
         return point;
     }

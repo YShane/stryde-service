@@ -37,7 +37,8 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
 				// allow public service
 				.antMatchers("/auth/**").permitAll()
 
-				.anyRequest().authenticated();
+				.anyRequest().permitAll();
+				//.anyRequest().authenticated();
 	}
 	
 	@Override

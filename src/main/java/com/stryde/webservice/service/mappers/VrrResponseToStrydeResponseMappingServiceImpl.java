@@ -3,6 +3,8 @@ package com.stryde.webservice.service.mappers;
 import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderResponseDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Service
 public class VrrResponseToStrydeResponseMappingServiceImpl implements VrrResponseToStrydeResponseMappingService{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(VrrResponseToStrydeResponseMappingServiceImpl.class);
 
     private final String typeAttr = "type";
     private final String nameAttr = "name";
@@ -39,18 +43,25 @@ public class VrrResponseToStrydeResponseMappingServiceImpl implements VrrRespons
         if(array.length()>0){
 
             for(int i=0; i<array.length();i++){
+
                 StopFinderResponseDto responseDto = new StopFinderResponseDto();
-                JSONObject currentObject = array.getJSONObject(i);
 
-                responseDto.getPoint().setStopType(currentObject.getString(typeAttr));
-                responseDto.getPoint().setName(currentObject.getString(nameAttr));
-                responseDto.getPoint().setObject(currentObject.getString(objectAttr));
+                Object temp = array.get(i);
 
-                JSONObject refObject = currentObject.getJSONObject(refAttr);
-                responseDto.getPoint().setPlace(refObject.getString(placeAttr));
-                responseDto.getPoint().setCoordinates(refObject.getString(coordsAttr));
+                if(temp instanceof JSONObject){
+                    JSONObject currentObject = (JSONObject)temp;
+                    LOGGER.debug(currentObject.toString());
+                    responseDto.getPoint().setStopType(currentObject.getString(typeAttr));
+                    responseDto.getPoint().setName(currentObject.getString(nameAttr));
+                    responseDto.getPoint().setObject(currentObject.getString(objectAttr));
 
-                responseList.add(responseDto);
+                    JSONObject refObject = currentObject.getJSONObject(refAttr);
+                    responseDto.getPoint().setPlace(refObject.getString(placeAttr));
+                    responseDto.getPoint().setCoordinates(refObject.getString(coordsAttr));
+
+                    responseList.add(responseDto);
+                }
+
             }
         } else {
 
