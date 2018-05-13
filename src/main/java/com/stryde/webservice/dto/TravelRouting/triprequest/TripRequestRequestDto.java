@@ -8,12 +8,14 @@ public class TripRequestRequestDto {
 
     private StopDto origin;
     private StopDto destination;
-
     private LocalDateTime datetime;
-
     //when false is arrival time
     private boolean isDepartureTime;
 
+    public TripRequestRequestDto()  {
+        origin = new StopDto();
+        destination = new StopDto();
+    }
 
     public StopDto getOrigin() {
         return origin;

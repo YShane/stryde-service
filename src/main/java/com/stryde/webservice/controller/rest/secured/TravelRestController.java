@@ -26,16 +26,17 @@ public class TravelRestController {
 
 
     @PreAuthorize("@securityService.isMyAccount(#authentication, #userDto.userId)")
-    @PostMapping("/findStop")
+    @PostMapping("/findstops")
     public ResponseEntity<?> searchForSpot(@Valid @RequestBody StopFinderRequestDto spot) throws IOException, URISyntaxException {
 
             return new ResponseEntity<>(this.travelInfoService.findStops(spot.getSearchTerm()), HttpStatus.OK);
     }
 
-    public ResponseEntity<?> doTripRequest(HttpServletRequest request, TripRequestRequestDto requestDto){
+    @PreAuthorize("@securityService.isMyAccount(#authentication, #userDto.userId)")
+    @PostMapping("/findTrips")
+    public ResponseEntity<?> doTripRequest(@Valid @RequestBody TripRequestRequestDto requestDto) throws IOException, URISyntaxException {
 
-        return null;
-
+        return new ResponseEntity<>(travelInfoService.findTrips(requestDto), HttpStatus.OK);
     }
 
     /**

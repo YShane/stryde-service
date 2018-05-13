@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * Exception to http response handler
@@ -32,6 +33,21 @@ public class BaseExceptionHandler {
 	@ExceptionHandler(StrydeException.class)
 	public ResponseEntity<String> handleCustomEvmsException(final StrydeException ex) {
 		LOGGER.error("Handling EvmsException with error code: {} and status: {} caused by: {}", ex.getErrorCode(),
+				ex.getErrorCode().getHttpStatus(), ex.getCause(), ex);
+		return ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(ex.getErrorCode().toString());
+	}
+	// login fuckup exception
+	@ExceptionHandler(AuthException.class)
+	public ResponseEntity<?> handleAuthException(final AuthException ex) {
+		LOGGER.error("Handling Exception with error code: {} and status: {} caused by: {}", ex.getErrorCode(),
+				ex.getErrorCode().getHttpStatus(), ex.getCause(), ex);
+		return  ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(ex.getErrorCode().toString());
+	}
+
+	// api exception
+	@ExceptionHandler(ApiException.class)
+	public ResponseEntity<String> handleApiException(final ApiException ex) {
+		LOGGER.error("Handling ApiException with error code: {} and status: {} caused by: {}", ex.getErrorCode(),
 				ex.getErrorCode().getHttpStatus(), ex.getCause(), ex);
 		return ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(ex.getErrorCode().toString());
 	}
@@ -65,9 +81,19 @@ public class BaseExceptionHandler {
 	}
 
 	// standard exception
-	@ExceptionHandler(Exception.class)
+/*	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handleException(final Exception ex) {
 		LOGGER.error("Handling unexpected exception with message: {} caused by: {}", ex.getMessage(), ex.getCause(), ex);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNEXPECTED_ERROR_MSG);
+	}*/
+
+
+	@ExceptionHandler(NoHandlerFoundException.class)
+	public ResponseEntity<?> handleNotFOundException(final NoHandlerFoundException ex) {
+		LOGGER.error("Handling Exception for which no handler was found with message: {} caused by: {}", ex.getMessage(), ex.getCause(), ex);
+		String msg = MessageFormat.format(HttpStatus.INTERNAL_SERVER_ERROR.toString(), ex.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNEXPECTED_ERROR_MSG);
 	}
+
+
 }

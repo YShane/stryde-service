@@ -1,6 +1,7 @@
 package com.stryde.webservice.service;
 import java.io.File;
 
+import com.stryde.webservice.exception.AppErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,9 @@ public class StorageServiceImpl implements StorageService{
     public void storeProfilePicture(UserDto userDto, MultipartFile file) throws FileUploadErrorException {
 
         if(file.isEmpty() || file==null){
-            throw new IllegalArgumentException("Uploaded File is all kinds of fucked up! " + file);
+            throw new FileUploadErrorException(AppErrorCode.UPLOAD_FILE_FAILURE);
         }
-
         File thumbnailFile = imageProcessorService.generateThumbnail(file);
-
         azureStorageService.uploadImageAsProfilePicture(userDto, thumbnailFile, file );
 
 

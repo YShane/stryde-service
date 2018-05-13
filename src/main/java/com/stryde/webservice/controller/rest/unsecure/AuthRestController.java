@@ -1,6 +1,7 @@
 package com.stryde.webservice.controller.rest.unsecure;
 
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -85,8 +87,22 @@ public class AuthRestController {
 		HttpHeaders headers = buildHeader();
 		UriComponentsBuilder builder = buildUriWithParam(loginDto);
 		HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
-		ResponseEntity<Object> oauthToken = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.POST, requestEntity, Object.class);
-		return new ResponseEntity<Object>(oauthToken.getBody(), HttpStatus.OK);
+
+		HashMap<String, Object> response = new HashMap<>();
+		try {
+			ResponseEntity<Object> oauthToken = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.POST, requestEntity, Object.class);
+			UserDto userDto = getUserInformation(loginDto);
+			response.put("UserInfo", userDto);
+			response.put("token", oauthToken.getBody());
+
+		}catch (HttpServerErrorException e){
+			//TODO
+		}
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+
+	private UserDto getUserInformation(LoginDto loginDto){
+		return this.authService.getActiveUserDtoByEmailAndPassword(loginDto.getUsername(), loginDto.getPassword());
 	}
 
 	@GetMapping(value = "/verify/{token}")

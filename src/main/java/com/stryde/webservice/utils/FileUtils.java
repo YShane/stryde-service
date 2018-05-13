@@ -9,7 +9,7 @@ public class FileUtils {
 
     public static File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
 
-        File convFile = new File( multipartFile.getOriginalFilename());
+        File convFile = new File(multipartFile.getOriginalFilename());
         multipartFile.transferTo(convFile);
         return convFile;
     }

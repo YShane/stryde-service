@@ -66,7 +66,7 @@ public class User implements Serializable {
 	private List<Trip> trips = new ArrayList<>();
 
 	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Media media = new Media();
+	private Media media;
 
 
 	public Long getUserId() {

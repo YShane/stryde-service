@@ -116,10 +116,8 @@ public class VRRApiConfig {
 
 
     //request specific urls
-    @Value("${stopfinderurlparam}")
-    public String stopfinderurlparam;
     @Value("${stopfinderurl}")
-    public String stopfinderurlparamValue;
+    public String stopfinderUrl;
 
     //Stopfinderaddendum at end of certain params
     @Value("${stopfinderaddendum}")
@@ -129,7 +127,7 @@ public class VRRApiConfig {
 
     //TripRequest
     @Value("${triprequesturl}")
-    public String tripRequestUrlParam;
+    public String tripRequestUrl;
 
     @Value("${TRoriginaddendum}")
     public String originAddendumParam;

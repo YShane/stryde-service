@@ -2,18 +2,23 @@ package com.stryde.webservice.dto.TravelRouting.stopfinder;
 
 import com.stryde.webservice.dto.TravelRouting.StopDto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StopFinderResponseDto {
 
-    private StopDto point;
+    private List<StopDto> stopDtos;
+
 
     public StopFinderResponseDto(){
-        this.point = new StopDto();
-    }
-    public StopDto getPoint() {
-        return point;
+        this.stopDtos = new ArrayList<StopDto>();
     }
 
-    public void setPoint(StopDto point) {
-        this.point = point;
+    public List<StopDto> getStopDtos() {
+        return stopDtos;
+    }
+
+    public void setStopDtos(List<StopDto> stopDtos) {
+        this.stopDtos = stopDtos;
     }
 }

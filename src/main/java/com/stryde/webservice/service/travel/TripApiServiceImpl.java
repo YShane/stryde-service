@@ -5,11 +5,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stryde.webservice.dto.TravelRouting.StopDto;
+import com.stryde.webservice.dto.TravelRouting.triprequest.TripMessage;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -36,7 +37,16 @@ import com.stryde.webservice.utils.DateUtils;
 @Service
 public class TripApiServiceImpl implements TripApiService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TripApiServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TripApiServiceImpl.class);
+
+    private final String parameterArray = "parameters";
+    private final String stopFinderObject = "stopFinder";
+    private final String messageArray = "message";
+    private final String inputObject = "input";
+    private final String pointsArray = "points";
+
+
+
 
     @Autowired
     private VRRApiConfig apiC;
@@ -46,17 +56,20 @@ public class TripApiServiceImpl implements TripApiService {
 
     private ArrayList<NameValuePair> baseNameValuePairList;
 
-    private URIBuilder baseUriBuilder = new URIBuilder();
+    private URIBuilder baseUriBuilder;
 
+    private HttpClient httpClient;
 
+    @Autowired
     public TripApiServiceImpl(VRRApiConfig apiC) {
 
         try {
             this.baseUriBuilder = new URIBuilder(apiC.urlparamValue);
         }catch (URISyntaxException u){
-            logger.error("UriSyntax in getTripsFromApiMethod not working" + u.getMessage());
+            LOGGER.error("UriSyntax in getTripsFromApiMethod not working" + u.getMessage());
         }
 
+        this.httpClient = HttpClientBuilder.create().build();
 
         this.baseNameValuePairList = new ArrayList<>();
         baseNameValuePairList.add(new BasicNameValuePair(apiC.sessionIdparam, Integer.toString(apiC.sessionIdparamValue)));
@@ -71,12 +84,6 @@ public class TripApiServiceImpl implements TripApiService {
 
     }
 
-    private final String parameterArray = "parameters";
-    private final String stopFinderObject = "stopFinder";
-    private final String messageArray = "message";
-    private final String inputObject = "input";
-    private final String pointsArray = "points";
-
         /**
              * @
              * @param searchterm
@@ -84,12 +91,9 @@ public class TripApiServiceImpl implements TripApiService {
              * @return StopFinderResponseDto
              */
     @Override
-    public List<StopFinderResponseDto> getPossibleStopsFromApiResponse(String searchterm) throws ClientProtocolException, IOException, URISyntaxException{
-
-        List<StopFinderResponseDto> responseDtos = new ArrayList<>();
+    public StopFinderResponseDto getPossibleStopsFromApi(String searchterm) throws IOException, URISyntaxException{
 
         ArrayList<NameValuePair> params = this.baseNameValuePairList;
-
 
         params.add(new BasicNameValuePair(apiC.nameparam + apiC.stopfinderAddendum, searchterm));
         //type in stopsearch is always any
@@ -97,29 +101,54 @@ public class TripApiServiceImpl implements TripApiService {
         params.add(new BasicNameValuePair(apiC.doNotSearchForStopsParam, Integer.toString(apiC.doNotSearchForStopsParamValue)));
         params.add(new BasicNameValuePair(apiC.anyObjFilterParam, Integer.toString(apiC.anyObjFilterParamValue)));
 
-            HttpClient httpClient = HttpClientBuilder.create().build();
+            String urlbase = this.baseUriBuilder.toString();
 
-            URIBuilder builder = this.baseUriBuilder;
-            String basepath = builder.getPath();
+            URIBuilder uriBuilder = new URIBuilder();
+            uriBuilder.setPath(urlbase + apiC.stopfinderUrl);
 
-            builder.setPath(basepath + apiC.stopfinderurlparamValue);
-
-            builder.setParameters(params);
-            HttpGet httpGet = new HttpGet(builder.build());
-            logger.debug(httpGet.toString());
+            uriBuilder.setParameters(params);
+            HttpGet httpGet = new HttpGet(uriBuilder.build());
+            LOGGER.debug(httpGet.toString());
             HttpResponse response = httpClient.execute(httpGet);
 
-            logger.debug(response.toString());
+            LOGGER.debug(response.getEntity().toString());
             HttpEntity responseEntity = response.getEntity();
 
-            List<StopFinderResponseDto> possibleStops = processStopFinderResponse(responseEntity);
+            return this.processStopFinderResponse(responseEntity);
 
+    }
 
-        return responseDtos;
+    private StopFinderResponseDto processStopFinderResponse(HttpEntity entity) throws IOException, JSONException, ParseException{
+
+        StopFinderResponseDto responseDto= new StopFinderResponseDto();
+
+        List<StopDto> stops = new ArrayList<>();
+
+        JSONObject root = getJSONObjectFromEntity(entity);
+
+        JSONArray parameters = root.getJSONArray(parameterArray);
+        LOGGER.debug(parameters.toString());
+
+        JSONObject stopFinderObject = root.getJSONObject(this.stopFinderObject);
+
+        JSONArray messageArray = stopFinderObject.getJSONArray(this.messageArray);
+        LOGGER.debug(messageArray.toString());
+
+        JSONObject inputObject = stopFinderObject.getJSONObject(this.inputObject);
+        LOGGER.debug(inputObject.toString());
+
+        JSONArray pointsArray = stopFinderObject.getJSONArray(this.pointsArray);
+
+        stops = mappingService.getStopFinderResponses(pointsArray);
+
+        responseDto.setStopDtos(stops);
+
+        return responseDto;
+
     }
 
     @Override
-    public List<Trip> getTripsFromApi(TripRequestRequestDto requestDto) throws URISyntaxException, IOException, JSONException, ParseException{
+    public TripRequestResponseDto getTripsFromApi(TripRequestRequestDto requestDto) throws URISyntaxException, IOException, JSONException, ParseException{
 
         List<Trip> possibleTrips = new ArrayList<>();
 
@@ -134,56 +163,60 @@ public class TripApiServiceImpl implements TripApiService {
         params.add(new BasicNameValuePair(apiC.timeHourParam, Integer.toString(requestDto.getdateTime().getHour())));
         params.add(new BasicNameValuePair(apiC.timeMinuteParam, Integer.toString(requestDto.getdateTime().getMinute())));
 
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
         URIBuilder builder = this.baseUriBuilder;
 
-        String basepath = builder.getPath();
-        builder.setPath(basepath + apiC.tripRequestUrlParam);
+        String urlbase = this.baseUriBuilder.toString();
+        URIBuilder uriBuilder = new URIBuilder();
+        uriBuilder.setPath(urlbase + apiC.tripRequestUrl);
 
-            HttpGet httpGet = new HttpGet(builder.build());
-            HttpResponse response = httpClient.execute(httpGet);
-            logger.debug(response.toString());
+        HttpGet httpGet = new HttpGet(builder.build());
+        HttpResponse response = httpClient.execute(httpGet);
 
-            HttpEntity entity = response.getEntity();
+        LOGGER.debug(response.toString());
 
-            TripRequestResponseDto responseDto = processTripRequest(entity);
+        HttpEntity entity = response.getEntity();
 
-        return null;
-    }
-
-    private List<StopFinderResponseDto> processStopFinderResponse(HttpEntity entity) throws IOException, JSONException, ParseException{
-
-        List<StopFinderResponseDto> responseDtos = new ArrayList<>();
-
-            JSONObject root = getJSONObjectFromEntity(entity);
-
-            JSONArray parameters = root.getJSONArray(parameterArray);
-            logger.debug(parameters.toString());
-
-            JSONObject stopFinderObject = root.getJSONObject(this.stopFinderObject);
-
-            JSONArray messageArray = stopFinderObject.getJSONArray(this.messageArray);
-            logger.debug(messageArray.toString());
-
-            JSONObject inputObject = stopFinderObject.getJSONObject(this.inputObject);
-            logger.debug(inputObject.toString());
-
-            JSONArray pointsArray = stopFinderObject.getJSONArray(this.pointsArray);
-
-            responseDtos = mappingService.getStopFinderResponses(pointsArray);
-
-            return null;
-
+        return processTripRequest(entity);
     }
 
     private TripRequestResponseDto processTripRequest(HttpEntity entity) throws IOException, JSONException, ParseException{
 
-            JSONObject object = getJSONObjectFromEntity(entity);
+        TripRequestResponseDto response = new TripRequestResponseDto();
+          final String tripsArray = "trips";
+          final String originobject = "origin";
+          final String destinationobject = "destination";
+          final String messageArray = "itdMessageList";
+
+            JSONObject root = getJSONObjectFromEntity(entity);
+
+            JSONObject originObject = root.getJSONObject(originobject);
+            JSONObject destinationObject = root.getJSONObject(destinationobject);
+            this.getStopDto(originObject);
+
+            JSONArray messageList = root.getJSONArray(messageArray);
+            response.setTripMessage(this.getMessage(messageList));
+
+
 
         //TODO
         return null;
     }
+
+    private TripMessage getMessage(JSONArray messageArray){
+
+        TripMessage message = new TripMessage();
+        message.setMessage("placeholder");
+        return message;
+    }
+
+    //for both origin and destination
+    private StopDto getStopDto(JSONObject root){
+        String input = "input";
+        JSONObject inputObject = root.getJSONObject(input);
+        //TODO
+        return null;
+    }
+
     private JSONObject getJSONObjectFromEntity(HttpEntity entity) throws IOException, JSONException, ParseException {
 
         JSONObject json = null;
@@ -191,7 +224,7 @@ public class TripApiServiceImpl implements TripApiService {
         String jsonString = EntityUtils.toString(entity);
         json = new JSONObject(jsonString);
 
-        logger.debug(json.toString());
+        LOGGER.debug(json.toString());
 
         return json;
     }

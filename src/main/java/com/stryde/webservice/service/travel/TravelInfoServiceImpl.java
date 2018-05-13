@@ -2,6 +2,7 @@ package com.stryde.webservice.service.travel;
 
 import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderResponseDto;
 import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestRequestDto;
+import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestResponseDto;
 import com.stryde.webservice.model.domain.Trip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +22,12 @@ public class TravelInfoServiceImpl implements TravelInfoService {
     private TripApiService tripApiService;
 
     @Override
-    public List<StopFinderResponseDto> findStops(String searchterm) throws IOException, URISyntaxException {
+    public StopFinderResponseDto findStops(String searchterm) throws IOException, URISyntaxException {
 
-      return this.tripApiService.getPossibleStopsFromApiResponse(searchterm);
+      return this.tripApiService.getPossibleStopsFromApi(searchterm);
     }
 
-    public List<Trip> findTrips(TripRequestRequestDto requestDto){
-        return null;
-
+    public TripRequestResponseDto findTrips(TripRequestRequestDto requestDto) throws IOException, URISyntaxException{
+        return this.tripApiService.getTripsFromApi(requestDto);
     }
 }

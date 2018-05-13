@@ -3,6 +3,7 @@ package com.stryde.webservice.config.provider;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.stryde.webservice.exception.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,7 +46,7 @@ public class DbAuthenticationProvider implements AuthenticationProvider {
 			// authentication name will be the user email
 			return new UsernamePasswordAuthenticationToken(userDto.getEmail(), "", authorities);
 		} else {
-			throw new StrydeException(AppErrorCode.WRONG_CREDENTIAL);
+			throw new AuthException(AppErrorCode.WRONG_CREDENTIAL);
 		}
 	}
 

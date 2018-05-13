@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
+import com.stryde.webservice.exception.AuthException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +80,7 @@ public class AuthServiceImpl implements AuthService{
 		if (validatePassword(password, user)) {
 			return modelMapper.map(user, UserDto.class);
 		}else {
-			throw new StrydeException(AppErrorCode.WRONG_CREDENTIAL);
+			throw new AuthException(AppErrorCode.WRONG_CREDENTIAL);
 		}
 		
 	}

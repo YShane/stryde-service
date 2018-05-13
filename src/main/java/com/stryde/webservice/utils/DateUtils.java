@@ -17,7 +17,7 @@ public class DateUtils {
 	//Format: DDMMYY
 	public static String localDateTimeToDateString(LocalDateTime datetime) throws IllegalArgumentException {
 
-		if(datetime==null|| datetime.equals(null)){
+		if(datetime==null){
 			throw new IllegalArgumentException("LocalDateTime format is fucked");
 		}
 
