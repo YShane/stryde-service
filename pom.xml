@@ -92,13 +92,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
-		<!-- dev DB https://mvnrepository.com/artifact/com.h2database/h2 -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+
 
 		<!-- swagger ui -->
 		<dependency>
@@ -134,6 +128,8 @@
 			<artifactId>azure-storage-spring-boot-starter</artifactId>
 			<version>2.0.1</version>
 		</dependency>
+
+
 
 		<!--For the generation of image thumbnails-->
 		<dependency>
