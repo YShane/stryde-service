@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService{
 	public UserDto registerUser(RegistrationDto registrationDto) {
 		validateInput(registrationDto);
 		
-		com.stryde.webservice.model.domain.User user = new User();
+		User user = new User();
 		LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
 		
 		// user data
@@ -70,6 +70,12 @@ public class AuthServiceImpl implements AuthService{
 		user = userRepository.save(user);
 		
 		return modelMapper.map(user, UserDto.class);
+	}
+	
+	@Override
+	public UserDto registerFacebookUser(String accessToken, String username, String email, String facebookUserID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -99,25 +105,33 @@ public class AuthServiceImpl implements AuthService{
 		return modelMapper.map(user, UserMinDto.class);
 	}
 	
+	@Override
+	public void checkEmailExist(String email) {
+		if (userRepository.findByEmail(email).isPresent()) {
+			logger.error("email:{} is already exist", email);
+			throw new StrydeException(AppErrorCode.EMAIL_ALREADY_EXIST);
+		}
+	}
+	
+	@Override
+	public void checkUsernameExist(String username) {
+		if (userRepository.findByUsername(username).isPresent()) {
+			logger.error("username:{} is already exist", username);
+			throw new StrydeException(AppErrorCode.USERNAME_ALREADY_EXIST);
+		}
+	}
+	
 	private User findUserByEmailOrThrow(String email) {
 		return userRepository.findByEmail(email).orElseThrow(() -> new StrydeException(AppErrorCode.USER_NOT_FOUND));
 	}
 	
 	private void validateInput(RegistrationDto registrationDto) {
-		if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
-			logger.error("email:{} is already exist", registrationDto.getEmail());
-			throw new StrydeException(AppErrorCode.EMAIL_ALREADY_EXIST);
-		}
-
-		if (userRepository.findByUsername(registrationDto.getUsername()).isPresent()) {
-			logger.error("username:{} is already exist", registrationDto.getUsername());
-			throw new StrydeException(AppErrorCode.USERNAME_ALREADY_EXIST);
-		}
+		checkEmailExist(registrationDto.getEmail());
+		checkUsernameExist(registrationDto.getUsername());
 	}
 	
 	private boolean validatePassword(String password, User user) {
 		return passwordEncoder.matches(password, user.getPassword());
 	}
-
 
 }

@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.stryde.webservice.dto.LoginFacebookDto;
 import com.stryde.webservice.dto.UserDto;
 import com.stryde.webservice.dto.auth.LoginDto;
 import com.stryde.webservice.dto.auth.RegistrationDto;
@@ -89,26 +89,40 @@ public class AuthRestController {
 		HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 
 		HashMap<String, Object> response = new HashMap<>();
-		try {
-			ResponseEntity<Object> oauthToken = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.POST, requestEntity, Object.class);
-			UserDto userDto = getUserInformation(loginDto);
-			response.put("UserInfo", userDto);
-			response.put("token", oauthToken.getBody());
-
-		}catch (HttpServerErrorException e){
-			//TODO
-		}
+		ResponseEntity<Object> oauthToken = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.POST, requestEntity, Object.class);
+		UserDto userDto = getUserInformation(loginDto);
+		response.put("UserInfo", userDto);
+		response.put("token", oauthToken.getBody());
+		
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
-
-	private UserDto getUserInformation(LoginDto loginDto){
-		return this.authService.getActiveUserDtoByEmailAndPassword(loginDto.getUsername(), loginDto.getPassword());
+	
+	@PostMapping(value = "/login-facebook")
+	public ResponseEntity<Object> login(@RequestBody LoginFacebookDto loginFacebookDto) throws Exception {
+		//TODO implement fb token check
+		//TODO insert fb user to db if facebookUserId not exist in DB
+		HashMap<String, Object> response = new HashMap<>();
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/verify/{token}")
 	public void verifyEmail(@PathVariable String token, HttpServletResponse response) throws Exception {
 		emailVerificationTokenService.verifyToken(token);
 		response.sendRedirect(appUrl);
+	}
+	
+	@GetMapping(value="/check-email/{email}")
+	public void checkEmailExist(@PathVariable String email) {
+		authService.checkEmailExist(email);
+	}
+	
+	@GetMapping(value="/check-username/{username}")
+	public void checkUserNameExist(@PathVariable String username) {
+		authService.checkUsernameExist(username);
+	}
+	
+	private UserDto getUserInformation(LoginDto loginDto){
+		return this.authService.getActiveUserDtoByEmailAndPassword(loginDto.getUsername(), loginDto.getPassword());
 	}
 	
 	private UriComponentsBuilder buildUriWithParam(LoginDto loginDto) {
