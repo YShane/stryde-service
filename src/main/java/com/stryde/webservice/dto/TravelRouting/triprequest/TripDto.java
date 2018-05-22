@@ -10,6 +10,7 @@ public class TripDto {
     private LocalDateTime boardTime;
     private LocalDateTime alightTime;
     private int duration;
+    private TripMessage tripMessage = new TripMessage();
 
 
     public Long getTripId() {
@@ -58,6 +59,14 @@ public class TripDto {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public TripMessage getTripMessage() {
+        return tripMessage;
+    }
+
+    public void setTripMessage(TripMessage tripMessage) {
+        this.tripMessage = tripMessage;
     }
 
     @Override

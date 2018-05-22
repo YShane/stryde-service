@@ -3,6 +3,8 @@ package com.stryde.webservice.service;
 import com.stryde.webservice.dto.chat.AllChatsDto;
 import com.stryde.webservice.dto.chat.ChatMinDto;
 import com.stryde.webservice.model.repository.ChatRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Service
 public class ChatServiceImpl implements ChatService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
 
     private ChatRepository chatRepository;
 

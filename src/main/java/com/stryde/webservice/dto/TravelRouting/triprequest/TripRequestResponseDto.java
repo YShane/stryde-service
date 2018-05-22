@@ -11,7 +11,6 @@ public class TripRequestResponseDto {
     private List<TripDto> trips;
     private StopDto from = new StopDto();
     private StopDto to = new StopDto();
-    private TripMessage tripMessage = new TripMessage();
     private LocalDateTime dateTimeSearched;
 
     public TripRequestResponseDto(){
@@ -40,14 +39,6 @@ public class TripRequestResponseDto {
 
     public void setTo(StopDto to) {
         this.to = to;
-    }
-
-    public TripMessage getTripMessage() {
-        return tripMessage;
-    }
-
-    public void setTripMessage(TripMessage tripMessage) {
-        this.tripMessage = tripMessage;
     }
 
     public LocalDateTime getDateTimeSearched() {

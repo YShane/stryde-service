@@ -2,11 +2,17 @@ package com.stryde.webservice.service.travel;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.stryde.webservice.dto.TravelRouting.StopDto;
+import com.stryde.webservice.dto.TravelRouting.triprequest.TripDto;
 import com.stryde.webservice.dto.TravelRouting.triprequest.TripMessage;
+import com.stryde.webservice.exception.StrydeException;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -197,12 +203,36 @@ public class TripApiServiceImpl implements TripApiService {
 
             //Message
             JSONArray messageList = root.getJSONArray(messageArray);
-            response.setTripMessage(this.getMessage(messageList));
 
             JSONArray tripsArray = root.getJSONArray(tripsArrayKey);
 
 
+
         //TODO
+        return null;
+    }
+
+    //This method goes through the JSON trips array and gets the trips.
+    private List<TripDto> getTripsFromArray(JSONArray tripsFromApi) throws JSONException {
+
+        final String durationKey = "duration";
+        final String interchangeKey = "interchange";
+        final String legsKey = "legs";
+
+        for(int i = 0; i< tripsFromApi.length(); i++){
+
+            JSONObject trip = tripsFromApi.getJSONObject(i);
+
+            String duration = trip.getString(durationKey);
+            String interchanges = trip.getString(interchangeKey);
+
+            //trips have legs
+            JSONArray legs = trip.getJSONArray(legsKey);
+
+
+
+
+        }
         return null;
     }
 

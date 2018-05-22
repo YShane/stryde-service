@@ -2,16 +2,10 @@ package com.stryde.webservice.model.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -60,6 +54,9 @@ public class Trip implements Serializable {
 
     @Column(name = C_duration)
     private int duration;
+
+    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Stop> stops;
 
 
     public Long getId() {
@@ -132,5 +129,17 @@ public class Trip implements Serializable {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public List<Stop> getStops() {
+        if(this.stops==null){
+            return new ArrayList<Stop>();
+        }else{
+            return this.stops;
+        }
+    }
+
+    public void setStops(List<Stop> stops) {
+        this.stops = stops;
     }
 }
