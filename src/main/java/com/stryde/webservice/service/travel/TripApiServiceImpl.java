@@ -182,20 +182,24 @@ public class TripApiServiceImpl implements TripApiService {
     private TripRequestResponseDto processTripRequest(HttpEntity entity) throws IOException, JSONException, ParseException{
 
         TripRequestResponseDto response = new TripRequestResponseDto();
-          final String tripsArray = "trips";
-          final String originobject = "origin";
-          final String destinationobject = "destination";
-          final String messageArray = "itdMessageList";
+          final String tripsArrayKey = "trips";
+          final String originobjectKey = "origin";
+          final String destinationobjectKey = "destination";
+          final String messageArrayKey = "itdMessageList";
 
             JSONObject root = getJSONObjectFromEntity(entity);
 
-            JSONObject originObject = root.getJSONObject(originobject);
-            JSONObject destinationObject = root.getJSONObject(destinationobject);
-            this.getStopDto(originObject);
+            //Origin Object
+            JSONObject originObject = root.getJSONObject(originobjectKey);
 
+            //Destination Object
+            JSONObject destinationObject = root.getJSONObject(destinationobjectKey);
+
+            //Message
             JSONArray messageList = root.getJSONArray(messageArray);
             response.setTripMessage(this.getMessage(messageList));
 
+            JSONArray tripsArray = root.getJSONArray(tripsArrayKey);
 
 
         //TODO
@@ -209,12 +213,8 @@ public class TripApiServiceImpl implements TripApiService {
         return message;
     }
 
-    //for both origin and destination
-    private StopDto getStopDto(JSONObject root){
-        String input = "input";
-        JSONObject inputObject = root.getJSONObject(input);
-        //TODO
-        return null;
+    private void getTrip(JSONArray array){
+
     }
 
     private JSONObject getJSONObjectFromEntity(HttpEntity entity) throws IOException, JSONException, ParseException {
