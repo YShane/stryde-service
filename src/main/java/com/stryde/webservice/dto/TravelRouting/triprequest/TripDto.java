@@ -1,15 +1,21 @@
 package com.stryde.webservice.dto.TravelRouting.triprequest;
 
+import com.stryde.webservice.dto.TravelRouting.StopDto;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class TripDto {
 
     private Long tripId;
     private String line;
-    private int numberOfChanges;
     private LocalDateTime boardTime;
     private LocalDateTime alightTime;
     private int duration;
+
+    private ArrayList<StopDto> stops = new ArrayList<>();
+
+    //To be included later
     private TripMessage tripMessage = new TripMessage();
 
 
@@ -27,14 +33,6 @@ public class TripDto {
 
     public void setLine(String line) {
         this.line = line;
-    }
-
-    public int getNumberOfChanges() {
-        return numberOfChanges;
-    }
-
-    public void setNumberOfChanges(int numberOfChanges) {
-        this.numberOfChanges = numberOfChanges;
     }
 
     public LocalDateTime getBoardTime() {
@@ -69,15 +67,11 @@ public class TripDto {
         this.tripMessage = tripMessage;
     }
 
-    @Override
-    public String toString() {
-        return "TripDto{" +
-                ", tripId=" + tripId +
-                ", line='" + line + '\'' +
-                ", numberOfChanges=" + numberOfChanges +
-                ", boardTime=" + boardTime +
-                ", alightTime=" + alightTime +
-                ", duration=" + duration +
-                '}';
+    public ArrayList<StopDto> getStops() {
+        return stops;
+    }
+
+    public void setStops(ArrayList<StopDto> stops) {
+        this.stops = stops;
     }
 }

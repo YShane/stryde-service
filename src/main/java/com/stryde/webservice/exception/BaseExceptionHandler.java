@@ -79,7 +79,6 @@ public class BaseExceptionHandler {
 		String msg = MessageFormat.format(DATABASE_ERROR_MSG, ex.getMessage());
 		return ResponseEntity.unprocessableEntity().body(msg);
 	}
-
 	// standard exception
 /*	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handleException(final Exception ex) {

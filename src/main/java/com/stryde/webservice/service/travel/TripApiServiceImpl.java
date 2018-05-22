@@ -1,6 +1,7 @@
 package com.stryde.webservice.service.travel;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -9,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.stryde.webservice.dto.TravelRouting.StopDto;
-import com.stryde.webservice.dto.TravelRouting.triprequest.TripDto;
-import com.stryde.webservice.dto.TravelRouting.triprequest.TripMessage;
+import com.stryde.webservice.dto.TravelRouting.triprequest.*;
 import com.stryde.webservice.exception.StrydeException;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.http.HttpEntity;
@@ -33,8 +33,6 @@ import org.springframework.stereotype.Service;
 
 import com.stryde.webservice.config.VRRApiConfig;
 import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderResponseDto;
-import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestRequestDto;
-import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestResponseDto;
 import com.stryde.webservice.model.domain.Trip;
 import com.stryde.webservice.model.enums.travel.PointTypes;
 import com.stryde.webservice.service.mappers.VrrResponseToStrydeResponseMappingService;
@@ -218,6 +216,7 @@ public class TripApiServiceImpl implements TripApiService {
         final String durationKey = "duration";
         final String interchangeKey = "interchange";
         final String legsKey = "legs";
+        final String pointsKey = "points";
 
         for(int i = 0; i< tripsFromApi.length(); i++){
 
@@ -228,6 +227,19 @@ public class TripApiServiceImpl implements TripApiService {
 
             //trips have legs
             JSONArray legs = trip.getJSONArray(legsKey);
+
+            final String footpathKey = "footpath";
+            for(int j = 0; j< legs.length(); j++){
+                JSONObject leg = legs.getJSONObject(j);
+                if(leg.optJSONArray(footpathKey)!=null){
+                    //In this case, it's a footpath
+
+                }else{
+                    //train/tram/etc
+                }
+            }
+
+
 
 
 
