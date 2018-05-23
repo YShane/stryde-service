@@ -218,7 +218,11 @@ public class TripApiServiceImpl implements TripApiService {
         final String legsKey = "legs";
         final String pointsKey = "points";
 
+        List<TripDto> listTrips = new ArrayList<>();
+
         for(int i = 0; i< tripsFromApi.length(); i++){
+
+            TripDto tripDto = new TripDto();
 
             JSONObject trip = tripsFromApi.getJSONObject(i);
 
@@ -232,10 +236,17 @@ public class TripApiServiceImpl implements TripApiService {
             for(int j = 0; j< legs.length(); j++){
                 JSONObject leg = legs.getJSONObject(j);
                 if(leg.optJSONArray(footpathKey)!=null){
-                    //In this case, it's a footpath
+                    //In this case, there's a footpath. Doesn't exclude any other means of transportation
+                   JSONArray footpathArray =  leg.getJSONArray(footpathKey);
+                   //There's always a JSON Object in the Array
+                    JSONObject footpathObject = footpathArray.getJSONObject(0);
+                    final String footpathAfterBeforeOrISKey = "position"; //does the footpath come before or after the included stopseq? Or is it just a leg with only a footpath?
+
+                    String footpathPosition = footpathObject.getString(footpathAfterBeforeOrISKey);
 
                 }else{
                     //train/tram/etc
+
                 }
             }
 
