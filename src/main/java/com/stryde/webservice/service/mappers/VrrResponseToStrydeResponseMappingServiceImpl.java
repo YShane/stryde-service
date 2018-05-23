@@ -31,6 +31,7 @@ public class VrrResponseToStrydeResponseMappingServiceImpl implements VrrRespons
     private final String placeAttr = "place";
     private final String coordsAttr = "coords";
     private final String stopIdAttr = "id";
+    private final String pointGidAttr = "pointGid";
     private HashMap<Integer, String> keyset = new HashMap();
 
     public VrrResponseToStrydeResponseMappingServiceImpl(){
@@ -90,5 +91,37 @@ public class VrrResponseToStrydeResponseMappingServiceImpl implements VrrRespons
             }
 
             return responseList;
+    }
+
+    //Takes an array "stopsequence" from api response and makes a list of stops
+    public List<StopDto> getStopSequence(JSONArray stopSeqArray){
+        ArrayList<StopDto> stops = new ArrayList<>();
+
+        try {
+            if(!(stopSeqArray.length()<=0) || !(stopSeqArray==null)){
+                for(int i = 0; i< stopSeqArray.length(); i++){
+                    JSONObject stop = stopSeqArray.getJSONObject(i);
+
+                    StopDto stopDto = new StopDto();
+                    stopDto.setName(stop.getString(nameAttr));
+                    stopDto.setPlace(stop.getString(placeAttr));
+
+                    JSONObject refObject = stop.getJSONObject(refAttr);
+
+                    stopDto.setStopId(refObject.getString(stopIdAttr));
+                    stopDto.setPointGid(refObject.getString(pointGidAttr));
+                    stopDto.setCoordinates(refObject.getString(coordsAttr));
+
+                    stops.add(stopDto);
+                }
+            }else {
+                throw new ApiException(AppErrorCode.API_RESPONSE_ERROR);
+            }
+        }catch (JSONException j){
+            LOGGER.error("VRR response issue");
+            throw new ApiException(AppErrorCode.API_RESPONSE_ERROR);
+        }
+
+        return stops;
     }
 }

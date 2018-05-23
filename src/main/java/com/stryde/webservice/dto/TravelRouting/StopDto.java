@@ -13,6 +13,7 @@ public class StopDto {
 
     private String coordinates;
     private String stopType;
+    private String pointGid;
 
     public String getStopId() {
         return stopId;
@@ -60,5 +61,13 @@ public class StopDto {
 
     public void setStopType(String stopType) {
         this.stopType = stopType;
+    }
+
+    public String getPointGid() {
+        return pointGid;
+    }
+
+    public void setPointGid(String pointGid) {
+        this.pointGid = pointGid;
     }
 }

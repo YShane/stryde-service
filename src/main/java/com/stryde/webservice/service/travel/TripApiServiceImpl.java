@@ -220,6 +220,7 @@ public class TripApiServiceImpl implements TripApiService {
 
         List<TripDto> listTrips = new ArrayList<>();
 
+        //trips array
         for(int i = 0; i< tripsFromApi.length(); i++){
 
             TripDto tripDto = new TripDto();
@@ -232,22 +233,41 @@ public class TripApiServiceImpl implements TripApiService {
             //trips have legs
             JSONArray legs = trip.getJSONArray(legsKey);
 
+            final String stopSeqKey = "stopSeq";
             final String footpathKey = "footpath";
+
+            List<TripLegDto> tripLegDtos = new ArrayList<>();
+
+            //legs array
             for(int j = 0; j< legs.length(); j++){
+                TripLegDto tripLegDto = new TripLegDto();
                 JSONObject leg = legs.getJSONObject(j);
-                if(leg.optJSONArray(footpathKey)!=null){
-                    //In this case, there's a footpath. Doesn't exclude any other means of transportation
-                   JSONArray footpathArray =  leg.getJSONArray(footpathKey);
-                   //There's always a JSON Object in the Array
-                    JSONObject footpathObject = footpathArray.getJSONObject(0);
-                    final String footpathAfterBeforeOrISKey = "position"; //does the footpath come before or after the included stopseq? Or is it just a leg with only a footpath?
 
-                    String footpathPosition = footpathObject.getString(footpathAfterBeforeOrISKey);
+                if(leg.optJSONArray(stopSeqKey)!=null){
 
-                }else{
-                    //train/tram/etc
+                    tripLegDto.setTripLegType(1);
 
+                    JSONArray stopSeq = leg.getJSONArray(stopSeqKey);
+
+                    List<StopDto> stops =  this.mappingService.getStopSequence(stopSeq);
+
+                    tripLegDto.setStopDtos(stops);
+
+                    if(leg.optJSONArray(footpathKey)!=null){
+                        //In this case, there's a footpath. Doesn't exclude any other means of transportation
+                        JSONArray footpathArray =  leg.getJSONArray(footpathKey);
+                        //There's always a JSON Object in the Array
+                        JSONObject footpathObject = footpathArray.getJSONObject(0);
+                        final String footpathAfterBeforeOrISKey = "position"; //does the footpath come before or after the included stopseq? Or is it just a leg with only a footpath?
+
+                        String footpathPosition = footpathObject.getString(footpathAfterBeforeOrISKey);
+
+                    }else{
+                        //train/tram/etc
+
+                    }
                 }
+
             }
 
 

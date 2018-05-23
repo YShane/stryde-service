@@ -4,6 +4,7 @@ import com.stryde.webservice.dto.TravelRouting.StopDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TripDto {
 
@@ -13,7 +14,7 @@ public class TripDto {
     private LocalDateTime alightTime;
     private int duration;
 
-    private ArrayList<StopDto> stops = new ArrayList<>();
+    private List<TripLegDto> tripLegs = new ArrayList<>();
 
     //To be included later
     private TripMessage tripMessage = new TripMessage();
@@ -67,11 +68,11 @@ public class TripDto {
         this.tripMessage = tripMessage;
     }
 
-    public ArrayList<StopDto> getStops() {
-        return stops;
+    public List<TripLegDto> getTripLegs() {
+        return tripLegs;
     }
 
-    public void setStops(ArrayList<StopDto> stops) {
-        this.stops = stops;
+    public void setTripLegs(List<TripLegDto> tripLegs) {
+        this.tripLegs = tripLegs;
     }
 }
