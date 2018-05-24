@@ -148,8 +148,6 @@ public class TripApiServiceImpl implements TripApiService {
     @Override
     public TripRequestResponseDto getTripsFromApi(TripRequestRequestDto requestDto) throws URISyntaxException, IOException, JSONException, ParseException{
 
-        List<Trip> possibleTrips = new ArrayList<>();
-
         ArrayList<NameValuePair> params = this.baseNameValuePairList;
 
         params.add(new BasicNameValuePair(apiC.stoptypeparam + apiC.originAddendumParam, PointTypes.stopID.text));
@@ -157,20 +155,21 @@ public class TripApiServiceImpl implements TripApiService {
 
         params.add(new BasicNameValuePair(apiC.stoptypeparam + apiC.destinationAddendumParam, PointTypes.stopID.text));
         params.add(new BasicNameValuePair(apiC.nameparam + apiC.destinationAddendumParam, requestDto.getDestination().getStopId()));
-        params.add(new BasicNameValuePair(apiC.dateParam, DateUtils.localDateTimeToDateString(requestDto.getdateTime())));
-        params.add(new BasicNameValuePair(apiC.timeHourParam, Integer.toString(requestDto.getdateTime().getHour())));
-        params.add(new BasicNameValuePair(apiC.timeMinuteParam, Integer.toString(requestDto.getdateTime().getMinute())));
+        params.add(new BasicNameValuePair(apiC.dateParam, DateUtils.localDateTimeToDateString(requestDto.getDatetime())));
+        params.add(new BasicNameValuePair(apiC.timeHourParam, Integer.toString(requestDto.getDatetime().getHour())));
+        params.add(new BasicNameValuePair(apiC.timeMinuteParam, Integer.toString(requestDto.getDatetime().getMinute())));
 
         URIBuilder builder = this.baseUriBuilder;
 
         String urlbase = this.baseUriBuilder.toString();
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setPath(urlbase + apiC.tripRequestUrl);
-
-        HttpGet httpGet = new HttpGet(builder.build());
+        uriBuilder.setParameters(params);
+        HttpGet httpGet = new HttpGet(uriBuilder.build());
+        LOGGER.info(httpGet.toString());
         HttpResponse response = httpClient.execute(httpGet);
 
-        LOGGER.debug(response.toString());
+        LOGGER.info(response.toString());
 
         HttpEntity entity = response.getEntity();
 
@@ -185,8 +184,10 @@ public class TripApiServiceImpl implements TripApiService {
           final String destinationobjectKey = "destination";
           final String messageArrayKey = "itdMessageList";
 
+            LOGGER.info(entity.toString());
             JSONObject root = getJSONObjectFromEntity(entity);
 
+            LOGGER.info(root.toString());
             //Origin Object
             JSONObject originObject = root.getJSONObject(originobjectKey);
 
@@ -198,10 +199,12 @@ public class TripApiServiceImpl implements TripApiService {
 
             JSONArray tripsArray = root.getJSONArray(tripsArrayKey);
 
+            List<TripDto> trips = getTripsFromArray(tripsArray);
 
-
+            response.setTrips(trips);
+            return response;
         //TODO
-        return null;
+
     }
 
     //This method goes through the JSON trips array and gets the trips.
@@ -212,6 +215,7 @@ public class TripApiServiceImpl implements TripApiService {
         final String legsKey = "legs";
         final String pointsKey = "points";
 
+        List<TripDto> trips= new ArrayList<>();
         //trips array
         for(int i = 0; i< tripsFromApi.length(); i++){
 
@@ -231,21 +235,22 @@ public class TripApiServiceImpl implements TripApiService {
             final String stopSeqKey = "stopSeq";
             final String footpathKey = "footpath";
 
-
+            List<TripLegDto> tripLegs = new ArrayList<>();
             //legs array
             for(int j = 0; j< legs.length(); j++){
-                TripLegDto tripLegDto = new TripLegDto();
                 JSONObject leg = legs.getJSONObject(j);
 
+                List<StopDto> stops= null;
                 if(leg.optJSONArray(stopSeqKey)!=null){
-
-
+                    LOGGER.debug("StopSeq found");
                     JSONArray stopSeq = leg.getJSONArray(stopSeqKey);
 
-                    tripLegDto.setStopDtos(this.mappingService.getStopSequence(stopSeq));
-
+                    stops = this.mappingService.getStopSequence(stopSeq);
                 }
+
+                FootpathDto footpathDto = null;
                 if(leg.optJSONArray(footpathKey)!=null){
+                    LOGGER.debug("Footpath found");
                     //In this case, there's a footpath. Doesn't exclude any other means of transportation
 
                     JSONArray footpathArray =  leg.getJSONArray(footpathKey);
@@ -254,22 +259,15 @@ public class TripApiServiceImpl implements TripApiService {
                     final String footpathAfterBeforeOrISKey = "position"; //does the footpath come before or after the included stopseq? Or is it just a leg with only a footpath?
 
                     String footpathPosition = footpathObject.getString(footpathAfterBeforeOrISKey);
-
-
-                }else{
-                    //train/tram/etc
-
+                    footpathDto.setPosition(footpathPosition);
                 }
-
+                TripLegDto tripLegDto = new TripLegDto(stops, footpathDto);
+                tripLegs.add(tripLegDto);
             }
-
-
-
-
-
-
+            tripDto.setTripLegs(tripLegs);
+            trips.add(tripDto);
         }
-        return null;
+        return trips;
     }
 
     private TripMessage getMessage(JSONArray messageArray){
@@ -279,9 +277,6 @@ public class TripApiServiceImpl implements TripApiService {
         return message;
     }
 
-    private void getTrip(JSONArray array){
-
-    }
 
     private JSONObject getJSONObjectFromEntity(HttpEntity entity) throws IOException, JSONException, ParseException {
 

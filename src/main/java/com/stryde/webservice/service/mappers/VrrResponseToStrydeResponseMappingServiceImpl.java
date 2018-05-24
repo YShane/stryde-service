@@ -95,7 +95,7 @@ public class VrrResponseToStrydeResponseMappingServiceImpl implements VrrRespons
 
     //Takes an array "stopsequence" from api response and makes a list of stops
     public List<StopDto> getStopSequence(JSONArray stopSeqArray){
-        ArrayList<StopDto> stops = new ArrayList<>();
+        List<StopDto> stops = new LinkedList<>();
 
         try {
             if(!(stopSeqArray.length()<=0) || !(stopSeqArray==null)){

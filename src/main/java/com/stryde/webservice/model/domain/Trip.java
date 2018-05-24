@@ -55,8 +55,6 @@ public class Trip implements Serializable {
     @Column(name = C_duration)
     private int duration;
 
-    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Stop> stops;
 
 
     public Long getId() {
@@ -131,15 +129,4 @@ public class Trip implements Serializable {
         this.duration = duration;
     }
 
-    public List<Stop> getStops() {
-        if(this.stops==null){
-            return new ArrayList<Stop>();
-        }else{
-            return this.stops;
-        }
-    }
-
-    public void setStops(List<Stop> stops) {
-        this.stops = stops;
-    }
 }

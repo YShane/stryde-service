@@ -2,27 +2,31 @@ package com.stryde.webservice.dto.TravelRouting.triprequest;
 
 import com.stryde.webservice.dto.TravelRouting.StopDto;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TripLegDto {
 
-    private HashMap<Integer, Object> mitteln;
+    private Deque<Object> mitteln = new LinkedList<>();
     private List<StopDto> stopDtos;
     private int tripLegType; //0 = none, 1 = trains, 2= footpath, 3 = both
 
+    private final String stopListKey = "stops";
+    private final String footpathKey = "footpath";
 
-    TripLegDto(List<StopDto> stops, FootpathDto footpathDto){
+    public TripLegDto(List<StopDto> stops, FootpathDto footpathDto){
         this.tripLegType = 0;
         if(stops!=null){
             hasTrains();
+            this.mitteln.add(stops);
         }
+
         if(footpathDto!=null){
             hasFootpath();
-        }
-        if(footpathDto.getPosition().equals(FootpathPosition.AFTER.text)){
-
+            if(footpathDto.getPosition().equals(FootpathPosition.AFTER.text)){
+                this.mitteln.add(stops);
+            }else if(footpathDto.getPosition().equals(FootpathPosition.IDEST.text)){
+                this.mitteln.addFirst(footpathDto);
+            }
         }
     }
 
@@ -45,11 +49,7 @@ public class TripLegDto {
         return tripLegType;
     }
 
-    public void legArrangement(){
-        if(){
 
-        }
-    }
 
     private static enum FootpathPosition{
         AFTER("AFTER"), IDEST("IDEST");

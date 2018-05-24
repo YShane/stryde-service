@@ -3,6 +3,8 @@ package com.stryde.webservice.controller.rest.secured;
 import com.stryde.webservice.dto.TravelRouting.stopfinder.StopFinderRequestDto;
 import com.stryde.webservice.dto.TravelRouting.triprequest.TripRequestRequestDto;
 import com.stryde.webservice.service.travel.TravelInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class TravelRestController {
 
     @Autowired
     private TravelInfoService travelInfoService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TravelRestController.class);
 
 
     @PreAuthorize("@securityService.isMyAccount(#authentication, #userDto.userId)")
@@ -33,9 +36,9 @@ public class TravelRestController {
     }
 
     @PreAuthorize("@securityService.isMyAccount(#authentication, #userDto.userId)")
-    @PostMapping("/findTrips")
+    @PostMapping("/findtrips")
     public ResponseEntity<?> doTripRequest(@Valid @RequestBody TripRequestRequestDto requestDto) throws IOException, URISyntaxException {
-
+        LOGGER.info(requestDto.toString());
         return new ResponseEntity<>(travelInfoService.findTrips(requestDto), HttpStatus.OK);
     }
 

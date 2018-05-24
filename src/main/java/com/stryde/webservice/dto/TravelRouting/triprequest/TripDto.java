@@ -84,4 +84,5 @@ public class TripDto {
     public void setUmsteige(String umsteige) {
         this.umsteige = umsteige;
     }
+
 }

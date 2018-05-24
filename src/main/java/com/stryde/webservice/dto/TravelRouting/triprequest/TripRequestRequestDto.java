@@ -33,19 +33,29 @@ public class TripRequestRequestDto {
         this.destination = destination;
     }
 
-    public LocalDateTime getdateTime() {
+    public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setdateTime(LocalDateTime datetime) {
+    public void setDatetime(LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
-    public boolean isDepartureTime() {
+    public boolean getIsDepartureTime() {
         return isDepartureTime;
     }
 
-    public void setDepartureTime(boolean departureTime) {
+    public void setIsDepartureTime(boolean departureTime) {
         isDepartureTime = departureTime;
+    }
+
+    @Override
+    public String toString() {
+        return "TripRequestRequestDto{" +
+                "origin=" + origin +
+                ", destination=" + destination +
+                ", datetime=" + datetime +
+                ", isDepartureTime=" + isDepartureTime +
+                '}';
     }
 }

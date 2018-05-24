@@ -4,6 +4,9 @@ public class FootpathDto {
 
     private String position;
 
+    public FootpathDto(){
+
+    }
     public FootpathDto(String position){
         this.position = position;
     }

@@ -70,4 +70,17 @@ public class StopDto {
     public void setPointGid(String pointGid) {
         this.pointGid = pointGid;
     }
+
+    @Override
+    public String toString() {
+        return "StopDto{" +
+                "stopId='" + stopId + '\'' +
+                ", place='" + place + '\'' +
+                ", object='" + object + '\'' +
+                ", name='" + name + '\'' +
+                ", coordinates='" + coordinates + '\'' +
+                ", stopType='" + stopType + '\'' +
+                ", pointGid='" + pointGid + '\'' +
+                '}';
+    }
 }
