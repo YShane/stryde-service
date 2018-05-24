@@ -1,18 +1,12 @@
 package com.stryde.webservice.service.travel;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URISyntaxException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.stryde.webservice.dto.TravelRouting.StopDto;
 import com.stryde.webservice.dto.TravelRouting.triprequest.*;
-import com.stryde.webservice.exception.StrydeException;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -218,8 +212,6 @@ public class TripApiServiceImpl implements TripApiService {
         final String legsKey = "legs";
         final String pointsKey = "points";
 
-        List<TripDto> listTrips = new ArrayList<>();
-
         //trips array
         for(int i = 0; i< tripsFromApi.length(); i++){
 
@@ -230,13 +222,15 @@ public class TripApiServiceImpl implements TripApiService {
             String duration = trip.getString(durationKey);
             String interchanges = trip.getString(interchangeKey);
 
+            tripDto.setDuration(duration);
+            tripDto.setUmsteige(interchanges);
+
             //trips have legs
             JSONArray legs = trip.getJSONArray(legsKey);
 
             final String stopSeqKey = "stopSeq";
             final String footpathKey = "footpath";
 
-            List<TripLegDto> tripLegDtos = new ArrayList<>();
 
             //legs array
             for(int j = 0; j< legs.length(); j++){
@@ -245,27 +239,26 @@ public class TripApiServiceImpl implements TripApiService {
 
                 if(leg.optJSONArray(stopSeqKey)!=null){
 
-                    tripLegDto.setTripLegType(1);
 
                     JSONArray stopSeq = leg.getJSONArray(stopSeqKey);
 
-                    List<StopDto> stops =  this.mappingService.getStopSequence(stopSeq);
+                    tripLegDto.setStopDtos(this.mappingService.getStopSequence(stopSeq));
 
-                    tripLegDto.setStopDtos(stops);
+                }
+                if(leg.optJSONArray(footpathKey)!=null){
+                    //In this case, there's a footpath. Doesn't exclude any other means of transportation
 
-                    if(leg.optJSONArray(footpathKey)!=null){
-                        //In this case, there's a footpath. Doesn't exclude any other means of transportation
-                        JSONArray footpathArray =  leg.getJSONArray(footpathKey);
-                        //There's always a JSON Object in the Array
-                        JSONObject footpathObject = footpathArray.getJSONObject(0);
-                        final String footpathAfterBeforeOrISKey = "position"; //does the footpath come before or after the included stopseq? Or is it just a leg with only a footpath?
+                    JSONArray footpathArray =  leg.getJSONArray(footpathKey);
+                    //There's always a JSON Object in the Array
+                    JSONObject footpathObject = footpathArray.getJSONObject(0);
+                    final String footpathAfterBeforeOrISKey = "position"; //does the footpath come before or after the included stopseq? Or is it just a leg with only a footpath?
 
-                        String footpathPosition = footpathObject.getString(footpathAfterBeforeOrISKey);
+                    String footpathPosition = footpathObject.getString(footpathAfterBeforeOrISKey);
 
-                    }else{
-                        //train/tram/etc
 
-                    }
+                }else{
+                    //train/tram/etc
+
                 }
 
             }
@@ -301,7 +294,6 @@ public class TripApiServiceImpl implements TripApiService {
 
         return json;
     }
-
 
 
 

@@ -12,7 +12,8 @@ public class TripDto {
     private String line;
     private LocalDateTime boardTime;
     private LocalDateTime alightTime;
-    private int duration;
+    private String duration;
+    private String umsteige;
 
     private List<TripLegDto> tripLegs = new ArrayList<>();
 
@@ -52,11 +53,11 @@ public class TripDto {
         this.alightTime = alightTime;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -74,5 +75,13 @@ public class TripDto {
 
     public void setTripLegs(List<TripLegDto> tripLegs) {
         this.tripLegs = tripLegs;
+    }
+
+    public String getUmsteige() {
+        return umsteige;
+    }
+
+    public void setUmsteige(String umsteige) {
+        this.umsteige = umsteige;
     }
 }
