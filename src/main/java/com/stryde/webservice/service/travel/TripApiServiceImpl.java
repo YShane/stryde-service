@@ -44,12 +44,8 @@ public class TripApiServiceImpl implements TripApiService {
     private final String pointsArray = "points";
 
 
-
-
-    @Autowired
     private VRRApiConfig apiC;
 
-    @Autowired
     private VrrResponseToStrydeResponseMappingService mappingService;
 
     private ArrayList<NameValuePair> baseNameValuePairList;
@@ -59,7 +55,7 @@ public class TripApiServiceImpl implements TripApiService {
     private HttpClient httpClient;
 
     @Autowired
-    public TripApiServiceImpl(VRRApiConfig apiC) {
+    public TripApiServiceImpl(VRRApiConfig apiC, VrrResponseToStrydeResponseMappingService mappingService) {
 
         try {
             this.baseUriBuilder = new URIBuilder(apiC.urlparamValue);
@@ -80,6 +76,8 @@ public class TripApiServiceImpl implements TripApiService {
         baseNameValuePairList.add(new BasicNameValuePair(apiC.statelessparam, Integer.toString(apiC.statelessparamValue)));
         baseNameValuePairList.add(new BasicNameValuePair(apiC.useLocalityMainStopParam, Integer.toString(apiC.useLocalityMainStopParamValue)));
 
+        this.apiC = apiC;
+        this.mappingService = mappingService;
     }
 
         /**
@@ -195,7 +193,7 @@ public class TripApiServiceImpl implements TripApiService {
             JSONObject destinationObject = root.getJSONObject(destinationobjectKey);
 
             //Message
-            JSONArray messageList = root.getJSONArray(messageArray);
+            JSONArray messageList = root.getJSONArray(messageArrayKey);
 
             JSONArray tripsArray = root.getJSONArray(tripsArrayKey);
 
@@ -257,7 +255,7 @@ public class TripApiServiceImpl implements TripApiService {
                     //There's always a JSON Object in the Array
                     JSONObject footpathObject = footpathArray.getJSONObject(0);
                     final String footpathAfterBeforeOrISKey = "position"; //does the footpath come before or after the included stopseq? Or is it just a leg with only a footpath?
-
+                    footpathDto = new FootpathDto();
                     String footpathPosition = footpathObject.getString(footpathAfterBeforeOrISKey);
                     footpathDto.setPosition(footpathPosition);
                 }
