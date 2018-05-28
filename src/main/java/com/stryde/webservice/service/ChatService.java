@@ -8,5 +8,5 @@ public interface ChatService {
 
     AllChatsDto getAllChatsForUser(Long userId);
 
-    void createNewChatForUserWithId(Long userId);
+    void createChatwithOtherUserwithId(Long userId);
 }

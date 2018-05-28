@@ -20,8 +20,14 @@ public class UserServiceImpl implements UserService{
     private ModelMapper modelMapper;
 	
 	@Override
-	public UserDto getUser(Long userId) {
+	public UserDto getUserDto(Long userId) {
 		Optional<User> optUser = userRepository.findById(userId);
 		return modelMapper.map(optUser.get(), UserDto.class);
 	}
+
+	public User getUser(Long userId){
+		Optional<User> optUser = userRepository.findById(userId);
+		return optUser.get();
+	}
+
 }

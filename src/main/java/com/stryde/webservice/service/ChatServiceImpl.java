@@ -2,6 +2,8 @@ package com.stryde.webservice.service;
 
 import com.stryde.webservice.dto.chat.AllChatsDto;
 import com.stryde.webservice.dto.chat.ChatMinDto;
+import com.stryde.webservice.model.domain.Chat;
+import com.stryde.webservice.model.domain.User;
 import com.stryde.webservice.model.repository.ChatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +18,18 @@ public class ChatServiceImpl implements ChatService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
 
+    private UserService userService;
     private ChatRepository chatRepository;
 
     @Autowired
-    public ChatServiceImpl(ChatRepository chatRepository){
+    public ChatServiceImpl(UserService userService, ChatRepository chatRepository){
         this.chatRepository = chatRepository;
+        this.userService = userService;
     }
 
     @Override
     public AllChatsDto getAllChatsForUser(Long userId){
         List<ChatRepository.ChatDetails> res = this.chatRepository.getallChatsforUserwithId(userId);
-
-        AllChatsDto chatsDto = new AllChatsDto();
 
         List<ChatMinDto> chats = new ArrayList<>();
 
@@ -41,13 +43,16 @@ public class ChatServiceImpl implements ChatService {
             chatMinDto.setDdob(chat.getUserdob());
             chats.add(chatMinDto);
         }
+        AllChatsDto chatsDto = new AllChatsDto();
         chatsDto.setChats(chats);
 
         return chatsDto;
     }
 
     @Override
-    public void createNewChatForUserWithId(Long userId) {
+    public void createChatwithOtherUserwithId(Long userId) {
+
+        Chat newChat = new Chat();
 
     }
 }

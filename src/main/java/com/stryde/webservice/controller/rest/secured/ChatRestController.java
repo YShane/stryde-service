@@ -20,7 +20,8 @@ public class ChatRestController {
 
     @PreAuthorize("@securityService.isMyAccount(#authentication, #userDto.userId)")
     @GetMapping("/newchat")
-    public void newChat(Long userId){
+    public void newChat(@RequestParam("interlocutorId") Long interlocutorId){
+
 
     }
 
