@@ -1,4 +1,4 @@
-package com.stryde.webservice.controller.secured;
+package com.stryde.webservice.controller.stomp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
